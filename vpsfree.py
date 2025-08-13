@@ -12,7 +12,7 @@ import docker
 import asyncio
 from discord import app_commands
 
-TOKEN = 'MTQwNTAwOTAxOTI3MzIxNjE3MA.GI_ZH_.DgHmsWrB6N1e1MF5oKVdMy1VR1k0zMl1s3a1pk' # TOKEN HERE
+TOKEN = 'MTQwNDgwNTQ2ODQyOTM1MzExMw.GptQoQ.mlM6ZLbV6T4-NUlY5IfBdTtfrgaTqm54q6GEzU' # TOKEN HERE
 SERVER_LIMIT = 4
 database_file = 'database.txt'
 
@@ -322,6 +322,7 @@ async def help_command(interaction: discord.Interaction):
     embed.add_field(name="/ping", value="Check the bot's latency.", inline=False)
     await interaction.response.send_message(embed=embed)
 
-bot.run(TOKEN)
+bot.run(MTQwNDgwNTQ2ODQyOTM1MzExMw.GptQoQ.mlM6ZLbV6T4-NUlY5IfBdTtfrgaTqm54q6GEzU)
+
 
 
