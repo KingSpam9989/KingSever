@@ -1,0 +1,37 @@
+name: VPS Free Discord Bot
+
+on:
+  workflow_dispatch:
+
+jobs:
+  run-vpsfree:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install python3-pip and Docker
+        run: |
+          sudo apt update
+          sudo apt install -y python3-pip docker.io
+
+      - name: Create Dockerfile
+        run: |
+          cat <<EOF > Dockerfile
+          FROM ubuntu:22.04
+          RUN apt update
+          RUN apt install -y tmate
+          EOF
+
+      - name: Build Docker image
+        run: sudo docker build -t ubuntu-22.04-with-tmate .
+
+      - name: Download vpsfree.py
+        run: wget -O vpsfree.py https://raw.githubusercontent.com/KingSpam9989/KingSever/refs/heads/main/vpsfree.py
+
+      - name: Install Python packages
+        run: pip3 install discord docker
+
+      - name: Run VPS Discord Bot
+        run: python3 vpsfree.py
