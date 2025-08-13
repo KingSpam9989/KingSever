@@ -11,14 +11,10 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Install python3-pip (skip if exists)
+      - name: Install python3-pip
         run: |
-          if ! command -v pip3 &> /dev/null; then
-            sudo apt update
-            sudo apt install -y python3-pip
-          else
-            echo "✅ python3-pip đã cài, bỏ qua."
-          fi
+          sudo apt update
+          sudo apt install -y python3-pip
 
       - name: Create Dockerfile
         run: |
@@ -28,24 +24,14 @@ jobs:
           RUN apt install -y tmate
           EOF
 
-      - name: Build Docker image (skip if exists)
-        run: |
-          if ! docker image inspect ubuntu-22.04-with-tmate >/dev/null 2>&1; then
-            docker build -t ubuntu-22.04-with-tmate .
-          else
-            echo "✅ Docker image đã tồn tại, bỏ qua."
-          fi
+      - name: Build Docker image
+        run: docker build -t ubuntu-22.04-with-tmate .
 
       - name: Download vpsfree.py
-        run: |
-          wget -O vpsfree.py https://raw.githubusercontent.com/KingSpam9989/KingSever/refs/heads/main/vpsfree.py
-          echo "✅ vpsfree.py đã tải xong."
-      - name: Install Python packages (skip if installed)
-        run: |
-          pip3 list | grep -q discord || pip3 install discord docker
+        run: wget -O vpsfree.py https://raw.githubusercontent.com/KingSpam9989/KingSever/refs/heads/main/vpsfree.py
 
+      - name: Install Python packages
+        run: pip3 install discord docker
 
-      - name: Run VPS Discord Bot (6h) & Backup database.txt
-        run: |
-          # Chạy bot tối đa 6 tiếng
-          python3 vpsfree.py
+      - name: Run VPS Discord Bot
+        run: python3 vpsfree.py
