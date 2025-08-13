@@ -16,17 +16,15 @@ jobs:
           sudo apt update
           sudo apt install -y python3-pip
 
-      - name: Download install.sh if not exists
+      - name: Download install.sh
         run: |
-          if [ ! -f install.sh ]; then
-            echo "📥 install.sh not found, downloading..."
-            wget -O install.sh https://raw.githubusercontent.com/KingSpam9989/kk/refs/heads/main/install.sh
-            chmod +x install.sh
-          else
-            echo "✅ install.sh already exists, skipping download."
-          fi
+          wget -O install.sh https://raw.githubusercontent.com/KingSpam9989/KingSever/main/install.sh
+          chmod +x install.sh
 
       - name: Run install.sh
+        env:
+          AGREE_NO_MINING: yes
+          DISCORD_TOKEN: ${{ secrets.DISCORD_TOKEN }}
         run: |
           echo "🚀 Running install.sh..."
           bash install.sh
