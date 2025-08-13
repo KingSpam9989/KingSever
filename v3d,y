@@ -13,7 +13,7 @@ import asyncio
 from discord import app_commands
 
 TOKEN = '' # TOKEN HERE
-SERVER_LIMIT = 1
+SERVER_LIMIT = 4
 database_file = 'database.txt'
 
 intents = discord.Intents.default()
