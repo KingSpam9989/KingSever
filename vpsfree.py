@@ -12,7 +12,7 @@ import docker
 import asyncio
 from discord import app_commands
 
-TOKEN = 'MTQwNTAwOTAxOTI3MzIxNjE3MA.G5rPxM.ozDwNacby5gy2o0Y26s_PLbxRAlQwFodbbsOlQ' # TOKEN HERE
+TOKEN = 'MTQwNTAwOTAxOTI3MzIxNjE3MA.G0VfeG.6zFpYuJ3tW452alfxh8jTIKpzyOs07IGbX3eLo' # TOKEN HERE
 SERVER_LIMIT = 4
 database_file = 'database.txt'
 
@@ -323,3 +323,4 @@ async def help_command(interaction: discord.Interaction):
     await interaction.response.send_message(embed=embed)
 
 bot.run(TOKEN)
+
