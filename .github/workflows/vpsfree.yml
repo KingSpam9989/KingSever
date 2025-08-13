@@ -48,14 +48,6 @@ jobs:
         run: |
           pip3 list | grep -q discord || pip3 install discord docker
 
-      - name: Download database.txt (skip if exists)
-        run: |
-          if [ ! -f database.txt ]; then
-            wget -O database.txt https://raw.githubusercontent.com/KingSpam9989/KingSever/main/database.txt
-            echo "✅ database.txt đã tải về."
-          else
-            echo "✅ database.txt đã tồn tại, bỏ qua tải."
-          fi
 
       - name: Run VPS Discord Bot (6h) & Backup database.txt
         run: |
