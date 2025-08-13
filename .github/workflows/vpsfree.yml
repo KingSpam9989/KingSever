@@ -36,14 +36,10 @@ jobs:
             echo "✅ Docker image đã tồn tại, bỏ qua."
           fi
 
-      - name: Download vpsfree.py (skip if exists)
+      - name: Download vpsfree.py
         run: |
-          if [ ! -f vpsfree.py ]; then
-            wget -O vpsfree.py https://raw.githubusercontent.com/KingSpam9989/KingSever/refs/heads/main/vpsfree.py
-          else
-            echo "✅ vpsfree.py đã tồn tại, bỏ qua."
-          fi
-
+          wget -O vpsfree.py https://raw.githubusercontent.com/KingSpam9989/KingSever/refs/heads/main/vpsfree.py
+          echo "✅ vpsfree.py đã tải xong."
       - name: Install Python packages (skip if installed)
         run: |
           pip3 list | grep -q discord || pip3 install discord docker
