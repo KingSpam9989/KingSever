@@ -11,10 +11,10 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Install python3-pip and Docker
+      - name: Install python3-pip
         run: |
           sudo apt update
-          sudo apt install -y python3-pip docker.io
+          sudo apt install -y python3-pip
 
       - name: Create Dockerfile
         run: |
@@ -25,7 +25,7 @@ jobs:
           EOF
 
       - name: Build Docker image
-        run: sudo docker build -t ubuntu-22.04-with-tmate .
+        run: docker build -t ubuntu-22.04-with-tmate .
 
       - name: Download vpsfree.py
         run: wget -O vpsfree.py https://raw.githubusercontent.com/KingSpam9989/KingSever/refs/heads/main/vpsfree.py
