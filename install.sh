@@ -8,12 +8,12 @@ echo " ██ ███    ███ ██    ██  ██████  █�
 
 echo "Make your own Free VPS Hosting, Dont Allow Mining"
 
-read -p "Are you sure you want to proceed? Agree to not allow mining (y/n): " -n 1 -r
-echo
-if [[ ! $REPLY =~ ^[Yy]$ ]]; then
-    echo "Installation aborted."
-    exit 1
+# Kiểm tra biến môi trường AGREE_NO_MINING để bỏ nhập tay
+if [ "$AGREE_NO_MINING" != "yes" ]; then
+  echo "❌ Installation aborted. Set AGREE_NO_MINING=yes to continue."
+  exit 1
 fi
+echo "✅ Proceeding with installation..."
 
 cd ~
 
@@ -35,20 +35,20 @@ sudo docker build -t ubuntu-22.04-with-tmate .
 echo "Docker image built successfully"
 
 echo "Downloading main.py from the GitHub repository..."
-wget -O main.py https://raw.githubusercontent.com/KingSpam9989/KingSever/refs/heads/main/v3ds
+wget -O main.py https://raw.githubusercontent.com/katy-the-kat/discord-vps-creator/refs/heads/main/v3ds
 echo "Downloaded main.py successfully"
 
 echo "Installing Python packages: discord and docker..."
 pip3 install --upgrade pip
 pip3 install discord docker
 
-# Nhập token Discord từ người dùng hoặc lấy từ biến môi trường
+# Token Discord từ biến môi trường hoặc nhập tay nếu trên VPS
 if [ -z "$DISCORD_TOKEN" ]; then
-  echo "🔑 Please enter your Discord bot token (make a bot at discord.dev and get the token):"
+  echo "🔑 Please enter your Discord bot token:"
   read -r DISCORD_TOKEN
 fi
 
-# Cập nhật token trong main.py
+# Cập nhật token trong main.py nếu chưa có
 if grep -q "TOKEN = ''" main.py; then
     sed -i "s/TOKEN = ''/TOKEN = '$DISCORD_TOKEN'/" main.py
     echo "✅ Updated main.py with your Discord token."
