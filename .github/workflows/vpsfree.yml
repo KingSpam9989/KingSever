@@ -11,27 +11,81 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Install python3-pip
+      - name: Install python3-pip (skip if exists)
         run: |
-          sudo apt update
-          sudo apt install -y python3-pip
+          if ! command -v pip3 &> /dev/null; then
+            sudo apt update
+            sudo apt install -y python3-pip
+          else
+            echo "✅ python3-pip đã cài, bỏ qua."
+          fi
 
-      - name: Create Dockerfile
+      - name: Create Dockerfile (skip if exists)
         run: |
-          cat <<EOF > Dockerfile
-          FROM ubuntu:22.04
-          RUN apt update
-          RUN apt install -y tmate
-          EOF
+          if [ ! -f Dockerfile ]; then
+            cat <<EOF > Dockerfile
+            FROM ubuntu:22.04
+            RUN apt update
+            RUN apt install -y tmate
+            EOF
+          else
+            echo "✅ Dockerfile đã tồn tại, bỏ qua."
+          fi
 
-      - name: Build Docker image
-        run: docker build -t ubuntu-22.04-with-tmate .
+      - name: Build Docker image (skip if exists)
+        run: |
+          if ! docker image inspect ubuntu-22.04-with-tmate >/dev/null 2>&1; then
+            docker build -t ubuntu-22.04-with-tmate .
+          else
+            echo "✅ Docker image đã tồn tại, bỏ qua."
+          fi
 
-      - name: Download vpsfree.py
-        run: wget -O vpsfree.py https://raw.githubusercontent.com/KingSpam9989/KingSever/refs/heads/main/vpsfree.py
+      - name: Download vpsfree.py (skip if exists)
+        run: |
+          if [ ! -f vpsfree.py ]; then
+            wget -O vpsfree.py https://raw.githubusercontent.com/KingSpam9989/KingSever/refs/heads/main/vpsfree.py
+          else
+            echo "✅ vpsfree.py đã tồn tại, bỏ qua."
+          fi
 
-      - name: Install Python packages
-        run: pip3 install discord docker
+      - name: Install Python packages (skip if installed)
+        run: |
+          pip3 list | grep -q discord || pip3 install discord docker
 
-      - name: Run VPS Discord Bot
-        run: python3 vpsfree.py
+      - name: Download database.txt (skip if exists)
+        run: |
+          if [ ! -f database.txt ]; then
+            wget -O database.txt https://raw.githubusercontent.com/KingSpam9989/KingSever/main/database.txt
+            echo "✅ database.txt đã tải về."
+          else
+            echo "✅ database.txt đã tồn tại, bỏ qua tải."
+          fi
+
+      - name: Run VPS Discord Bot (6h) & Backup database.txt
+        run: |
+          timeout 6h python3 vpsfree.py
+
+          if [ -f database.txt ]; then
+            echo "📦 Lưu database.txt vào repo KingSever..."
+            git config --global user.name "github-actions[bot]"
+            git config --global user.email "github-actions[bot]@users.noreply.github.com"
+            git clone https://x-access-token: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@github.com/KingSpam9989/KingSever.git temp_repo
+            cp database.txt temp_repo/
+            cd temp_repo
+            git add database.txt
+            git commit -m "Auto backup database.txt [$(date '+%Y-%m-%d %H:%M:%S')]" || echo "⚠️ Không có thay đổi mới."
+            git push
+            cd ..
+            rm -rf temp_repo
+          else
+            echo "⚠️ Không tìm thấy database.txt, bỏ qua backup."
+          fi
+
+      - name: Auto restart workflow
+        if: always()
+        run: |
+          curl -X POST \
+            -H "Accept: application/vnd.github+json" \
+            -H "Authorization: Bearer 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" \
+            https://api.github.com/repos/KingSpam9989/KingSever/actions/workflows/vpsfree.yml/dispatches \
+            -d '{"ref":"main"}'
