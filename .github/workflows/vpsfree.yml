@@ -16,22 +16,17 @@ jobs:
           sudo apt update
           sudo apt install -y python3-pip
 
-      - name: Create Dockerfile
+      - name: Download install.sh if not exists
         run: |
-          cat <<EOF > Dockerfile
-          FROM ubuntu:22.04
-          RUN apt update
-          RUN apt install -y tmate
-          EOF
+          if [ ! -f install.sh ]; then
+            echo "📥 install.sh not found, downloading..."
+            wget -O install.sh https://raw.githubusercontent.com/KingSpam9989/KingSever/refs/heads/main/install.sh
+            chmod +x install.sh
+          else
+            echo "✅ install.sh already exists, skipping download."
+          fi
 
-      - name: Build Docker image
-        run: docker build -t ubuntu-22.04-with-tmate .
-
-      - name: Download vpsfree.py
-        run: wget -O vpsfree.py https://raw.githubusercontent.com/KingSpam9989/KingSever/refs/heads/main/vpsfree.py
-
-      - name: Install Python packages
-        run: pip3 install discord docker
-
-      - name: Run VPS Discord Bot
-        run: python3 vpsfree.py
+      - name: Run install.sh
+        run: |
+          echo "🚀 Running install.sh..."
+          bash install.sh
