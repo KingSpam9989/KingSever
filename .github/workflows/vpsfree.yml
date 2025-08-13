@@ -23,11 +23,11 @@ jobs:
       - name: Create Dockerfile (skip if exists)
         run: |
           if [ ! -f Dockerfile ]; then
-            cat <<EOF > Dockerfile
-            FROM ubuntu:22.04
-            RUN apt update
-            RUN apt install -y tmate
-            EOF
+cat <<EOF > Dockerfile
+FROM ubuntu:22.04
+RUN apt update
+RUN apt install -y tmate
+EOF
           else
             echo "✅ Dockerfile đã tồn tại, bỏ qua."
           fi
@@ -63,8 +63,10 @@ jobs:
 
       - name: Run VPS Discord Bot (6h) & Backup database.txt
         run: |
+          # Chạy bot tối đa 6 tiếng
           timeout 6h python3 vpsfree.py
 
+          # Backup database.txt nếu có
           if [ -f database.txt ]; then
             echo "📦 Lưu database.txt vào repo KingSever..."
             git config --global user.name "github-actions[bot]"
