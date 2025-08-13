@@ -1,22 +1,16 @@
-name: Auto Reset VPS Free
+name: Auto Reset VPS Discord Bot
 
 on:
-  schedule:
-    - cron: "0 */6 * * *" # Mỗi 6 tiếng
   workflow_dispatch:
 
 jobs:
-  trigger-vpsfree:
+  auto-reset:
     runs-on: ubuntu-latest
     steps:
-      - name: Gửi request restart workflow VPS Free
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          OWNER: ${{ github.repository_owner }}
-          REPO: ${{ github.event.repository.name }}
+      - name: Trigger VPS Free Discord Bot workflow
         run: |
           curl -X POST \
             -H "Accept: application/vnd.github+json" \
-            -H "Authorization: Bearer $GITHUB_TOKEN" \
-            https://api.github.com/repos/$OWNER/$REPO/actions/workflows/vpsfree.yml/dispatches \
+            -H "Authorization: Bearer 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" \
+            https://api.github.com/repos/KingSpam9989/KingSever/actions/workflows/vpsfree.yml/dispatches \
             -d '{"ref":"main"}'
