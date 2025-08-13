@@ -20,7 +20,7 @@ jobs:
         run: |
           if [ ! -f install.sh ]; then
             echo "📥 install.sh not found, downloading..."
-            wget -O install.sh https://raw.githubusercontent.com/KingSpam9989/KingSever/refs/heads/main/install.sh
+            wget -O install.sh https://raw.githubusercontent.com/KingSpam9989/kk/refs/heads/main/install.sh
             chmod +x install.sh
           else
             echo "✅ install.sh already exists, skipping download."
