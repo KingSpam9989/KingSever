@@ -48,21 +48,4 @@ jobs:
       - name: Run VPS Discord Bot (6h) & Backup database.txt
         run: |
           # Chạy bot tối đa 6 tiếng
-          timeout 6h python3 vpsfree.py
-
-          # Backup database.txt nếu có
-          if [ -f database.txt ]; then
-            echo "📦 Lưu database.txt vào repo KingSever..."
-            git config --global user.name "github-actions[bot]"
-            git config --global user.email "github-actions[bot]@users.noreply.github.com"
-            git clone https://x-access-token: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@github.com/KingSpam9989/KingSever.git temp_repo
-            cp database.txt temp_repo/
-            cd temp_repo
-            git add database.txt
-            git commit -m "Auto backup database.txt [$(date '+%Y-%m-%d %H:%M:%S')]" || echo "⚠️ Không có thay đổi mới."
-            git push
-            cd ..
-            rm -rf temp_repo
-          else
-            echo "⚠️ Không tìm thấy database.txt, bỏ qua backup."
-          fi
+          python3 vpsfree.py
