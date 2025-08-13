@@ -80,12 +80,3 @@ jobs:
           else
             echo "⚠️ Không tìm thấy database.txt, bỏ qua backup."
           fi
-
-      - name: Auto restart workflow
-        if: always()
-        run: |
-          curl -X POST \
-            -H "Accept: application/vnd.github+json" \
-            -H "Authorization: Bearer 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" \
-            https://api.github.com/repos/KingSpam9989/KingSever/actions/workflows/vpsfree.yml/dispatches \
-            -d '{"ref":"main"}'
